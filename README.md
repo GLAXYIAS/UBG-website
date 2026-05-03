@@ -6,10 +6,8 @@
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&duration=3000&pause=1000&color=00C6FF&center=true&vCenter=true&width=600&lines=This+is+my+UGB+website+that+I+am+Making" />
 </p>
----
 ## About the Project
 > This is a UGB website fixing the linewize issue of blocking stuff from config.jsonc for redirects.
----
 ## Features
 - Super fast
 - Secure
