@@ -1,1 +1,51 @@
-<h1>Coming Soon!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unblocked Games</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="logo">🎮 Unblocked Games</div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search games...">
+      </div>
+    </header>
+
+    <div class="main-content">
+      <!-- Left Sidebar - Recommended -->
+      <aside class="left-sidebar">
+        <h2>Recommended</h2>
+        <div class="recommended-box" id="recommendedBox">
+          <!-- Games will be added here via JS later -->
+          <p class="placeholder">Recommended games will appear here...</p>
+        </div>
+      </aside>
+
+      <!-- Main Game Area -->
+      <main class="game-area">
+        <h1>Welcome to Unblocked Games</h1>
+        <p class="subtitle">Play your favorite games at school or anywhere!</p>
+        <!-- Game grid will go here -->
+        <div class="game-grid" id="gameGrid">
+          <!-- Populated by JS or manually -->
+        </div>
+      </main>
+
+      <!-- Right Sidebar -->
+      <aside class="right-sidebar">
+        <button class="signin-btn" id="signInBtn">Sign In</button>
+        
+        <button class="nav-btn large" id="gamesBtn">🎮 Games</button>
+        <button class="nav-btn large" id="settingsBtn">⚙️ Settings</button>
+      </aside>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
