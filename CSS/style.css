@@ -6,7 +6,7 @@
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: linear-gradient(135deg, #0a001f, #1a0033, #0f0a1f);
+  background: linear-gradient(135deg, #0c001f, #1a0033);
   color: #e0e0ff;
   min-height: 100vh;
   overflow-x: hidden;
@@ -14,147 +14,220 @@ body {
 
 .dashboard {
   display: grid;
-  grid-template-columns: 240px 1fr 260px;
+  grid-template-columns: 260px 1fr 280px;
   min-height: 100vh;
 }
 
-/* Left Navigation */
+/* ==================== LEFT NAV ==================== */
 .left-nav {
-  background: rgba(15, 10, 40, 0.95);
-  border-right: 1px solid rgba(139, 0, 255, 0.2);
-  padding: 25px 20px;
+  background: rgba(15, 10, 45, 0.98);
+  border-right: 1px solid rgba(140, 0, 255, 0.25);
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
 }
 
 .logo {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 40px;
-  background: linear-gradient(90deg, #c084fc, #a855f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 50px;
+  color: #c084fc;
 }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
-  color: #c0b0ff;
+  display: block;
+  padding: 16px 20px;
+  color: #b0a0ff;
   text-decoration: none;
-  border-radius: 12px;
-  margin-bottom: 6px;
+  border-radius: 14px;
+  margin-bottom: 8px;
   transition: all 0.3s;
+  font-weight: 500;
 }
 
-.nav-item:hover, .nav-item.active {
-  background: rgba(139, 0, 255, 0.25);
+.nav-item:hover,
+.nav-item.active {
+  background: rgba(140, 0, 255, 0.3);
   color: white;
-  transform: translateX(8px);
 }
 
-/* Top Bar */
+/* ==================== TOP BAR ==================== */
 .top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 30px;
-  background: rgba(15, 10, 40, 0.8);
-  border-bottom: 1px solid rgba(139, 0, 255, 0.2);
+  padding: 25px 35px;
+  background: rgba(15, 10, 45, 0.9);
+  border-bottom: 1px solid rgba(140, 0, 255, 0.2);
 }
 
 .greeting h1 {
-  font-size: 26px;
+  font-size: 28px;
+  margin-bottom: 4px;
 }
 
-.username {
-  color: #c084fc;
+.greeting p {
+  color: #a0a0cc;
 }
 
 .search-bar input {
-  padding: 14px 20px;
-  width: 380px;
-  background: rgba(30, 20, 60, 0.8);
-  border: 1px solid #6b21a8;
+  padding: 14px 24px;
+  width: 420px;
+  background: rgba(30, 20, 70, 0.8);
+  border: 1px solid #7c3aed;
   border-radius: 50px;
   color: white;
   font-size: 16px;
 }
 
-/* Spotlight */
-.spotlight {
-  margin: 30px;
-  padding: 40px;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://source.unsplash.com/random/1200x500/?space,planet') center/cover;
-  border-radius: 24px;
-  border: 1px solid rgba(192, 132, 252, 0.3);
-  position: relative;
+.search-bar input:focus {
+  outline: none;
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.2);
 }
 
-.spotlight-badge {
-  display: inline-block;
-  background: #8b00ff;
-  padding: 6px 16px;
-  border-radius: 50px;
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-
-.spotlight-title {
-  font-size: 42px;
-  margin-bottom: 12px;
-}
-
-.spotlight-actions {
-  margin-top: 30px;
-}
-
-.play-btn {
-  padding: 16px 32px;
-  font-size: 18px;
+.signin-btn {
+  padding: 12px 28px;
   background: linear-gradient(90deg, #8b00ff, #c084fc);
   border: none;
   border-radius: 50px;
   color: white;
+  font-weight: 600;
   cursor: pointer;
-  margin-right: 12px;
+  transition: transform 0.2s;
 }
 
-/* Game Grid */
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
-  padding: 0 30px 40px;
+.signin-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ==================== HERO SECTION ==================== */
+.hero {
+  margin: 30px 35px;
+  padding: 60px 50px;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), #2a0066;
+  border-radius: 24px;
+  border: 1px solid #a855f7;
+  position: relative;
+}
+
+.badge {
+  background: #8b00ff;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.hero h2 {
+  font-size: 42px;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #c0b0ff;
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.play-btn {
+  padding: 16px 36px;
+  background: linear-gradient(90deg, #a855f7, #c084fc);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.play-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+}
+
+.secondary-btn {
+  padding: 16px 32px;
+  background: transparent;
+  border: 2px solid #8b5cf6;
+  border-radius: 50px;
+  color: #e0e0ff;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.secondary-btn:hover {
+  background: rgba(139, 92, 246, 0.15);
+}
+
+/* ==================== RECOMMENDED SECTION ==================== */
+.section {
+  padding: 0 35px 40px;
 }
 
 .section-title {
-  padding: 0 30px;
+  font-size: 24px;
   margin-bottom: 20px;
-  font-size: 22px;
   color: #c084fc;
 }
 
-/* Right Sidebar */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 24px;
+}
+
+/* ==================== RIGHT SIDEBAR ==================== */
 .right-sidebar {
-  background: rgba(15, 10, 40, 0.95);
-  border-left: 1px solid rgba(139, 0, 255, 0.2);
-  padding: 25px;
+  background: rgba(15, 10, 45, 0.98);
+  border-left: 1px solid rgba(140, 0, 255, 0.25);
+  padding: 30px 20px;
 }
 
-.quick-btn, .quick-card {
+.quick-action-btn {
   width: 100%;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 18px;
+  font-size: 18px;
+  background: linear-gradient(90deg, #6d28d9, #a855f7);
+  border: none;
   border-radius: 16px;
-  text-align: center;
-  background: rgba(139, 0, 255, 0.15);
-  border: 1px solid rgba(192, 132, 252, 0.3);
-  transition: 0.3s;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: all 0.3s;
 }
 
-.quick-btn:hover {
-  background: #8b00ff;
-  transform: scale(1.05);
+.quick-action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.sidebar-card {
+  background: rgba(30, 20, 70, 0.6);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(140, 0, 255, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: 220px 1fr;
+  }
+  .right-sidebar {
+    display: none;
+  }
 }
