@@ -1,28 +1,27 @@
-// Basic interactivity
 document.addEventListener('DOMContentLoaded', () => {
     
-  // Sign In Button
+  // Sign In Button - Goes to your Login folder
   const signInBtn = document.getElementById('signInBtn');
   signInBtn.addEventListener('click', () => {
-    alert("Sign In feature coming soon! 🔑");
-    // You can later connect this to a modal or Firebase, etc.
+    window.location.href = "Login/login.html";
   });
 
-  // Navigation Buttons
+  // Other buttons
   document.getElementById('gamesBtn').addEventListener('click', () => {
-    alert("Games section - you are already here!");
+    alert("You are already on the Games page!");
+    // You can remove the alert later or make it scroll to top, etc.
   });
 
   document.getElementById('settingsBtn').addEventListener('click', () => {
     alert("Settings panel coming soon ⚙️");
   });
 
-  // Search functionality (basic)
+  // Search bar
   const searchInput = document.getElementById('searchInput');
   searchInput.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && searchInput.value.trim() !== "") {
       console.log('Searching for:', searchInput.value);
-      // Add your search/filter logic here
+      // Add search logic later
     }
   });
 });
