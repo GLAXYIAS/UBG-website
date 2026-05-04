@@ -4,7 +4,7 @@ import { games, getMostPopular } from './config.js';
 document.addEventListener('DOMContentLoaded', () => {
 
   // ====================== BUTTONS ======================
-  
+
   // Sign In Button
   const signInBtn = document.getElementById('signInBtn');
   if (signInBtn) {
@@ -13,13 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Random Game Button
+  // Settings Button
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      alert("Settings panel coming soon!");
+    });
+  }
+
+  // Random Game Button (Now picks randomly from config.js)
   const randomBtn = document.getElementById('randomBtn');
   if (randomBtn) {
     randomBtn.addEventListener('click', () => {
+      if (games.length === 0) {
+        alert("No games available!");
+        return;
+      }
       const randomGame = games[Math.floor(Math.random() * games.length)];
       alert(`Launching: ${randomGame.title}`);
-      // TODO: Later redirect to actual game
+      // TODO: Later you can redirect to the actual game
     });
   }
 
@@ -28,8 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (playFeatured) {
     playFeatured.addEventListener('click', () => {
       const popular = getMostPopular();
-      const featured = popular[0];
-      alert(`Launching Featured Game: ${featured.title}`);
+      if (popular.length > 0) {
+        const featured = popular[0];
+        alert(`Launching Featured Game: ${featured.title}`);
+      }
     });
   }
 
@@ -56,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
-  // Set Featured Game from most clicked
+  // Set Featured Game (most clicked)
   function setFeaturedGame() {
     const popular = getMostPopular();
     if (popular.length > 0) {
