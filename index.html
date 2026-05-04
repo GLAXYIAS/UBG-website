@@ -34,11 +34,9 @@
         <div class="search-bar">
           <input type="text" id="searchInput" placeholder="Search games...">
         </div>
-        
-        <button class="signin-btn" id="signInBtn">Sign In</button>
       </header>
 
-      <!-- Featured / Hero Section -->
+      <!-- Featured / Hero -->
       <section class="hero">
         <div class="hero-content">
           <span class="badge">Featured</span>
@@ -52,26 +50,23 @@
         </div>
       </section>
 
-      <!-- Recommended Games -->
+      <!-- Random Game Button - Under Featured -->
+      <div class="random-section">
+        <button class="quick-action-btn" id="randomBtn">Random Game</button>
+      </div>
+
+      <!-- Games Grid -->
       <section class="section">
-        <h2 class="section-title">Recommended Games</h2>
         <div class="game-grid" id="gameGrid">
-          <!-- Games will be populated by JS later -->
+          <!-- Games populated by JS -->
         </div>
       </section>
     </main>
 
     <!-- Right Sidebar -->
     <aside class="right-sidebar">
-      <button class="quick-action-btn" id="randomBtn">Random Game</button>
-      
-      <div class="sidebar-card">
-        <h3>Trending Now</h3>
-      </div>
-      
-      <div class="sidebar-card">
-        <h3>Popular Categories</h3>
-      </div>
+      <button class="signin-btn" id="signInBtn">Sign In</button>
+      <button class="settings-btn" id="settingsBtn">Settings</button>
     </aside>
   </div>
 
