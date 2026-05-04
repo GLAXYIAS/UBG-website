@@ -5,13 +5,13 @@
 
 <!-- TYPING ANIMATION (slower + no repeat) -->
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&duration=5000&pause=2000&color=00C6FF&center=true&vCenter=true&width=700&lines=This+is+my+UGB+website+that+I+am+making&repeat=false" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&duration=5000&pause=2000&color=00C6FF&center=true&vCenter=true&width=700&lines=This+is+my+UBG+website+that+I+am+making&repeat=false" />
 </p>
 
 ---
 
 ## 🚀 About the Project
-> This is a UGB website fixing the Linewize issue of blocking stuff from `config.jsonc` for redirects.
+> This is a UBG website fixing the Linewize issue of blocking stuff from `config.jsonc` for redirects.
 
 ---
 
