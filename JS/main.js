@@ -10,12 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (signInBtn) {
     signInBtn.addEventListener('click', () => {
-      console.log("Redirecting...");
-      // ../ means "Go out of JS folder, then look for Login folder"
-      window.location.href = "../Login/login.html";
-    });
+  console.log("Redirecting...");
+  // Try this simpler path first:
+  window.location.href = "Login/login.html"; 
+});
   }
-
   // ====================== NAVIGATION ======================
  
   // Left Sidebar Navigation
