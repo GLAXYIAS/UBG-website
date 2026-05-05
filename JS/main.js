@@ -1,4 +1,4 @@
-import { games, getMostPopular } from '/UBG-website/JS/config.js';
+import { games, getMostPopular } from './config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
