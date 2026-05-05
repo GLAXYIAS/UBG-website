@@ -10,9 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (signInBtn) {
     signInBtn.addEventListener('click', () => {
-      console.log("Sign In button clicked! Redirecting...");
-      window.location.href = "Login/login.html";
-    });
+  console.log("Sign In button clicked! Redirecting...");
+  // Use the repo name in the path to ensure GitHub Pages finds it correctly
+  window.location.href = "/UBG-website/Login/login.html";
+});
   } else {
     console.error("Sign In button NOT found! Check the ID in HTML.");
   }
