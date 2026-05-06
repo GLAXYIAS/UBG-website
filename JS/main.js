@@ -32,11 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Settings
   const settingsBtn = document.getElementById('settingsBtn');
-  if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-      alert("Settings panel coming soon!");
-    });
-  }
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', () => {
+    // This goes into the Settings folder from the root
+    window.location.href = "Settings/settings.html"; 
+  });
+}
 
   // Random Game
   const randomBtn = document.getElementById('randomBtn');
