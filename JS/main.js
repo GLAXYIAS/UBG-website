@@ -30,14 +30,42 @@ document.addEventListener('DOMContentLoaded', () => {
   if (navUnblockers) navUnblockers.addEventListener('click', () => alert("Unblockers / Proxy section coming soon"));
   if (navCommunications) navCommunications.addEventListener('click', () => alert("Communications / Chat coming soon"));
 
-  // Settings
   const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettings = document.getElementById('closeSettings');
+const themeCards = document.querySelectorAll('.theme-card');
+
+// Open/Close logic
 if (settingsBtn) {
-  settingsBtn.addEventListener('click', () => {
-    // This goes into the Settings folder from the root
-    window.location.href = "Settings/settings.html"; 
-  });
+  settingsBtn.addEventListener('click', () => settingsModal.style.display = 'flex');
 }
+if (closeSettings) {
+  closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
+}
+
+// Theme Application logic
+themeCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const theme = card.getAttribute('data-theme');
+    const root = document.documentElement;
+
+    if (theme === 'midnight') {
+      root.style.setProperty('--accent', '#ffffff');
+      root.style.setProperty('--bg-gradient', '#000000');
+      root.style.setProperty('--container-bg', '#000000');
+      document.body.style.background = "#000000";
+    } else {
+      // Reset to Default Purple
+      root.style.setProperty('--accent', '#8b00ff');
+      root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #0a0a0a, #1a0033)');
+      root.style.setProperty('--container-bg', 'rgba(15, 15, 25, 0.95)');
+      document.body.style.background = "linear-gradient(135deg, #0a0a0a, #1a0033)";
+    }
+    
+    // Optional: Save to localStorage so it stays after refresh
+    localStorage.setItem('selectedTheme', theme);
+  });
+});
 
   // Random Game
   const randomBtn = document.getElementById('randomBtn');
