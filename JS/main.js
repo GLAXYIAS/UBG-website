@@ -4,7 +4,7 @@ import { applyCloak } from '../Cloaks/cloak.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Null_X Dashboard Loaded");
 
-    // ====================== 1. PERSISTENCE (Load on Startup) ======================
+    // ====================== 1. PERSISTENCE ======================
     const savedTheme = localStorage.getItem('selectedTheme');
     if (savedTheme) applyTheme(savedTheme);
 
@@ -98,20 +98,37 @@ document.addEventListener('DOMContentLoaded', () => {
         closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
     }
 
-    // ====================== 6. NAVIGATION & SEARCH ======================
-    const signInBtn = document.getElementById('signInBtn');
-    if (signInBtn) {
-        signInBtn.addEventListener('click', () => {
-            window.location.href = "Login/login.html"; 
-        });
+    // ====================== 6. GAME LAUNCHER ======================
+    function launchGame(gameId) {
+        window.location.href = `Games/game-player.html?id=${gameId}`;
     }
 
+    // Merged Random Game button logic
     const randomBtn = document.getElementById('randomBtn');
     if (randomBtn) {
         randomBtn.addEventListener('click', () => {
             if (games.length === 0) return alert("No games available!");
             const randomGame = games[Math.floor(Math.random() * games.length)];
-            alert(`Launching: ${randomGame.title}`);
+            launchGame(randomGame.id);
+        });
+    }
+
+    // Featured Play button logic
+    const playBtn = document.querySelector('.play-btn'); 
+    if (playBtn) {
+        playBtn.addEventListener('click', () => {
+            const popular = getMostPopular();
+            if (popular.length > 0) {
+                launchGame(popular[0].id);
+            }
+        });
+    }
+
+    // ====================== 7. UI ELEMENTS ======================
+    const signInBtn = document.getElementById('signInBtn');
+    if (signInBtn) {
+        signInBtn.addEventListener('click', () => {
+            window.location.href = "Login/login.html"; 
         });
     }
 
@@ -130,4 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     setFeaturedGame();
+
+    console.log("%cNull_X loaded successfully", "color: #c084fc");
 });
