@@ -1,1 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a, #1a0033);
+  color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.settings-container {
+  background: rgba(15, 15, 25, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid #8b00ff;
+  box-shadow: 0 0 30px rgba(139, 0, 255, 0.2);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  text-align: center;
+}
+
+.glow {
+  text-shadow: 0 0 15px rgba(192, 132, 252, 0.6);
+  background: linear-gradient(90deg, #c084fc, #e0bbff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 5px;
+}
+
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #ff4d4d;
+  font-size: 32px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.close-x:hover {
+  transform: scale(1.2) rotate(90deg);
+  color: #ff0000;
+}
+
+.setting-section {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.color-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.color-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.color-btn:hover { transform: scale(1.1); }
+.color-btn.active { border-color: white; box-shadow: 0 0 10px white; }
+
+.purple { background: #8b00ff; }
+.blue { background: #0077ff; }
+.green { background: #2ecc71; }
+.red { background: #ff4d4d; }
+
+.secondary-btn {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #444;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.secondary-btn:hover { background: rgba(255, 255, 255, 0.2); }
