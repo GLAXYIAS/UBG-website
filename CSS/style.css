@@ -1,4 +1,4 @@
-:root {
+ :root {
 
   --accent: #8b00ff;
 
@@ -35,7 +35,15 @@
 
 
 body {
-  background: var(--bg-gradient) !important;
+
+  font-family: 'Inter', system-ui, sans-serif;
+
+  background: #0f0a1f;
+
+  color: #e0e0ff;
+
+  min-height: 100vh;
+
 }
 
 
@@ -49,13 +57,19 @@ body {
   min-height: 100vh;
 
 }
+
+
+
     /* Update your Sidebar */
 
 .left-nav, .right-sidebar, .top-bar {
-  background: var(--container-bg) !important; 
-  border-color: var(--accent) !important;
-  border-style: solid;
+
+  background: var(--container-bg); /* Now it follows your theme! */
+
+  border-color: var(--accent);     /* Borders will turn white in Midnight */
+
 }
+
 .logo {
 
   font-size: 28px;
@@ -118,6 +132,8 @@ body {
 
   padding: 20px 30px;
 
+  background: #1a1433;
+
   border-bottom: 1px solid #4b2e8a;
 
 }
@@ -135,8 +151,13 @@ body {
 /* Update your Inputs */
 
 .search-bar input {
-  /* Change border to the variable */
-  border: 1px solid var(--accent) !important;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid var(--accent);
+
+  color: white;
+
 }
 
 .signin-btn {
@@ -162,8 +183,17 @@ body {
 /* Hero / Featured */
 
 .hero {
-  background: var(--container-bg) !important;
-  border: 1px solid var(--accent) !important;
+
+  margin: 25px 30px;
+
+  padding: 50px;
+
+  background: linear-gradient(#2a1f4d, #1a1433);
+
+  border-radius: 20px;
+
+  border: 1px solid #8b5cf6;
+
 }
 
 
@@ -249,6 +279,8 @@ body {
 /* Right Sidebar */
 
 .right-sidebar {
+
+  background: #1a1433;
 
   border-left: 1px solid #4b2e8a;
 
