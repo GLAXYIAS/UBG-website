@@ -52,6 +52,7 @@
         if (gameData) {
             document.title = gameData.title + " | Null_X";
             document.getElementById('game-display-title').textContent = gameData.title;
+            // This loads the local path defined in your config.js
             document.getElementById('game-container').src = "../" + gameData.url;
         } else {
             window.location.href = "../index.html";
