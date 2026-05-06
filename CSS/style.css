@@ -35,15 +35,7 @@
 
 
 body {
-
-  font-family: 'Inter', system-ui, sans-serif;
-
-  background: #0f0a1f;
-
-  color: #e0e0ff;
-
-  min-height: 100vh;
-
+  background: var(--bg-gradient) !important;
 }
 
 
@@ -57,19 +49,13 @@ body {
   min-height: 100vh;
 
 }
-
-
-
     /* Update your Sidebar */
 
 .left-nav, .right-sidebar, .top-bar {
-
-  background: var(--container-bg); /* Now it follows your theme! */
-
-  border-color: var(--accent);     /* Borders will turn white in Midnight */
-
+  /* Change the hard-coded #1a1433 to the variable */
+  background: var(--container-bg) !important; 
+  border-color: var(--accent) !important;
 }
-
 .logo {
 
   font-size: 28px;
@@ -151,13 +137,8 @@ body {
 /* Update your Inputs */
 
 .search-bar input {
-
-  background: rgba(255, 255, 255, 0.05);
-
-  border: 1px solid var(--accent);
-
-  color: white;
-
+  /* Change border to the variable */
+  border: 1px solid var(--accent) !important;
 }
 
 .signin-btn {
@@ -183,17 +164,9 @@ body {
 /* Hero / Featured */
 
 .hero {
-
-  margin: 25px 30px;
-
-  padding: 50px;
-
-  background: linear-gradient(#2a1f4d, #1a1433);
-
-  border-radius: 20px;
-
-  border: 1px solid #8b5cf6;
-
+  /* Change the hard-coded gradients to the variable */
+  background: var(--container-bg) !important;
+  border: 1px solid var(--accent) !important;
 }
 
 
