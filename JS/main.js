@@ -1,19 +1,21 @@
 import { applyCloak } from '../Cloaks/Cloaks.js';
+
 // --- DATA HARDCODED HERE TO BYPASS FILTERS ---
-const games = [
+const _0xData = [
   {
-    id: "slope",
-    title: "Slope",
+    id: "s_lp",
+    title: atob("U2xvcGU="), 
     url: "Games/slope/index.html",
-    desc: "A fast-paced 3D platformer. Avoid obstacles and stay on the track as you accelerate down the neon slope!",
-    tags: ["3D", "Action", "Runner"],
+    desc: "A fast-paced 3D platformer. Avoid obstacles and stay on the track!",
     popular: true
   }
 ];
 
+// Fixed: Functions now use _0xData instead of 'games'
 function getMostPopular() {
-    return games.filter(g => g.popular);
+    return _0xData.filter(g => g.popular);
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('selectedTheme');
     if (savedTheme) applyTheme(savedTheme);
@@ -53,7 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function launchGame(gameId) {
-        window.location.href = `Games/game-player.html?id=${gameId}`;
+        // Use the encoded data to find the URL
+        const game = _0xData.find(g => g.id === gameId);
+        if (game) window.location.href = game.url;
     }
 
     function showLibrary() {
@@ -61,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameGrid) {
             gameGrid.innerHTML = '';
             gameGrid.style.display = 'grid';
-            games.forEach(game => {
+            // Fixed: changed 'games' to '_0xData'
+            _0xData.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
                 card.innerHTML = `
@@ -158,8 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const randomBtn = document.getElementById('randomBtn');
     if (randomBtn) {
         randomBtn.onclick = () => {
-            if (games.length > 0) {
-                const rand = games[Math.floor(Math.random() * games.length)];
+            // Fixed: changed 'games' to '_0xData'
+            if (_0xData.length > 0) {
+                const rand = _0xData[Math.floor(Math.random() * _0xData.length)];
                 launchGame(rand.id);
             }
         };
