@@ -2,9 +2,6 @@ import { games, getMostPopular } from './config.js';
 import { applyCloak } from '../Cloaks/Cloaks.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Null_X Dashboard Loaded");
-
-    // ====================== 1. PERSISTENCE (Load on Startup) ======================
     const savedTheme = localStorage.getItem('selectedTheme');
     if (savedTheme) applyTheme(savedTheme);
 
@@ -12,15 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedCloak && savedCloak !== "none") {
         try {
             applyCloak(savedCloak);
-        } catch (e) {
-            console.error("Cloak import failed. Check file path.");
-        }
+        } catch (e) {}
     }
 
     let savedShortcut = localStorage.getItem('panicKey') || "";
     let savedLink = localStorage.getItem('panicUrl') || "https://google.com";
 
-    // ====================== 2. SELECTORS ======================
     const settingsModal = document.getElementById('settingsModal');
     const settingsBtn = document.getElementById('settingsBtn');
     const closeSettings = document.getElementById('closeSettings');
@@ -28,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const panicInput = document.getElementById('panicShortcut');
     const panicLinkInput = document.getElementById('panicLink');
     const savePanicBtn = document.getElementById('savePanic');
+    const gamesNavBtn = document.getElementById('nav-games');
 
-    // ====================== 3. THEME LOGIC ======================
     function applyTheme(theme) {
         const root = document.documentElement;
         if (theme === 'midnight') {
@@ -53,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ====================== 4. TAB CLOAK LOGIC ======================
     if (cloakSelector) {
         if (savedCloak) cloakSelector.value = savedCloak;
         cloakSelector.addEventListener('change', (e) => {
@@ -67,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ====================== 5. PANIC BUTTON LOGIC ======================
     if (panicInput) panicInput.value = savedShortcut;
     if (panicLinkInput) panicLinkInput.value = savedLink;
 
@@ -84,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('panicUrl', panicLinkInput.value);
             savedShortcut = panicInput.value;
             savedLink = panicLinkInput.value;
-            alert("Settings Saved!");
+            alert("Saved");
         });
     }
 
@@ -96,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ====================== 6. MODAL CONTROL ======================
     if (settingsBtn) {
         settingsBtn.addEventListener('click', () => settingsModal.style.display = 'flex');
     }
@@ -104,21 +95,21 @@ document.addEventListener('DOMContentLoaded', () => {
         closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
     }
 
-    // ====================== 7. GAME LAUNCHER ======================
     function launchGame(gameId) {
         window.location.href = `Games/game-player.html?id=${gameId}`;
     }
 
-    const randomBtn = document.getElementById('randomBtn');
-    if (randomBtn) {
-        randomBtn.addEventListener('click', () => {
-            if (games.length === 0) return alert("No games found!");
-            const randomGame = games[Math.floor(Math.random() * games.length)];
-            launchGame(randomGame.id);
+    if (gamesNavBtn) {
+        gamesNavBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (games.length > 0) {
+                launchGame(games[0].id);
+            } else {
+                window.location.href = "Games/index.html";
+            }
         });
     }
 
-    // ====================== 8. FEATURED & UI ======================
     const popular = getMostPopular();
     if (popular && popular.length > 0) {
         const titleEl = document.getElementById('hero-title');
