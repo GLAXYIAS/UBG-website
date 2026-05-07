@@ -1,6 +1,5 @@
 import { applyCloak } from '../Cloaks/Cloaks.js';
 
-// --- DATA HARDCODED HERE TO BYPASS FILTERS ---
 const _0xData = [
   {
     id: "s_lp",
@@ -20,12 +19,18 @@ const _0xData = [
     id: "b_ft",
     title: atob("QnVsbGV0IEZvcmNl"), 
     url: "Games/bulletforce/index.html",
-    desc: "Action-packed multiplayer FPS. Choose your weapons and dominate the battlefield.",
+    desc: "Action-packed multiplayer FPS. Dominate the battlefield.",
+    popular: true
+  },
+  {
+    id: "p_em",
+    title: atob("UG9rZW1vbiBFbWVyYWxk"), 
+    url: "Games/pokemon-emerald/index.html",
+    desc: "The classic GBA adventure. Become the Hoenn Champion!",
     popular: true
   }
 ];
 
-// Fixed: Functions now use _0xData instead of 'games'
 function getMostPopular() {
     return _0xData.filter(g => g.popular);
 }
