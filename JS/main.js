@@ -1,40 +1,40 @@
 import { applyCloak } from '../Cloaks/Cloaks.js';
 
-// --- DATA HARDCODED HERE TO BYPASS FILTERS ---
+// --- DATA HARDCODED HERE
 const _0xData = [
   {
     id: "s_lp",
     title: atob("U2xvcGU="), 
-    url: "Games/slope/index.html",
+    path: "slope", 
     desc: "A fast-paced 3D platformer. Stay on the track!",
     popular: true
   },
   {
     id: "d_md",
     title: atob("RHJpdmUgTWFk"), 
-    url: "Games/drivemad/index.html",
+    path: "drivemad", 
     desc: "Challenging physics-based driving. Don't flip your truck!",
     popular: true
   },
   {
     id: "b_ft",
     title: atob("QnVsbGV0IEZvcmNl"), 
-    url: "Games/bulletforce/index.html",
+    path: "bulletforce", 
     desc: "Action-packed multiplayer FPS. Dominate the battlefield.",
     popular: true
   },
   {
     id: "p_em",
     title: atob("UG9rZW1vbiBFbWVyYWxk"), 
-    url: "Games/pokemon-emerald/index.html",
+    path: "pokemon-emerald",
     desc: "The classic GBA adventure. Become the Hoenn Champion!",
     popular: true
   },
   {
     id: "b_to",
     title: atob("QnJvdGF0bw=="), 
-    url: "Games/brotato/index.html",
-    desc: "A top-down arena shooter roguelite where you play a potato wielding up to 6 weapons at a time.",
+    path: "brotato", 
+    desc: "A top-down arena shooter roguelite where you play a potato.",
     popular: true
   }
 ];
@@ -82,11 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function launchGame(gameId) {
-        // Use the encoded data to find the URL
-        const game = _0xData.find(g => g.id === gameId);
-        if (game) window.location.href = game.url;
+   // Update your launch function to include the path in the URL
+function launchGame(gameId) {
+    const game = _0xData.find(g => g.id === gameId);
+    if (game) {
+        window.location.href = `Games/game-player.html?id=${game.id}&folder=${game.path}`;
     }
+}
 
     function showLibrary() {
         if (heroSection) heroSection.style.display = 'none';
