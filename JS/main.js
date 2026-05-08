@@ -1,25 +1,25 @@
 import { applyCloak } from '../Cloaks/Cloaks.js';
 
-// --- DATA HARDCODED HERE
+// --- DATA HARDCODED & ENCODED TO BYPASS FILTERS ---
 const _0xData = [
   {
     id: "s_lp",
     title: atob("U2xvcGU="), 
-    path: "slope", 
+    path: "slope",
     desc: "A fast-paced 3D platformer. Stay on the track!",
     popular: true
   },
   {
     id: "d_md",
     title: atob("RHJpdmUgTWFk"), 
-    path: "drivemad", 
+    path: "drivemad",
     desc: "Challenging physics-based driving. Don't flip your truck!",
     popular: true
   },
   {
     id: "b_ft",
     title: atob("QnVsbGV0IEZvcmNl"), 
-    path: "bulletforce", 
+    path: "bulletforce",
     desc: "Action-packed multiplayer FPS. Dominate the battlefield.",
     popular: true
   },
@@ -33,18 +33,18 @@ const _0xData = [
   {
     id: "b_to",
     title: atob("QnJvdGF0bw=="), 
-    path: "brotato", 
+    path: "brotato",
     desc: "A top-down arena shooter roguelite where you play a potato.",
     popular: true
   }
 ];
 
-// Fixed: Functions now use _0xData instead of 'games'
 function getMostPopular() {
     return _0xData.filter(g => g.popular);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. PERSISTENCE ---
     const savedTheme = localStorage.getItem('selectedTheme');
     if (savedTheme) applyTheme(savedTheme);
 
@@ -53,22 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
         try { applyCloak(savedCloak); } catch (e) {}
     }
 
-    let savedShortcut = localStorage.getItem('panicKey') || "";
-    let savedLink = localStorage.getItem('panicUrl') || "https://google.com";
-
+    // --- 2. SELECTORS ---
     const settingsModal = document.getElementById('settingsModal');
     const settingsBtn = document.getElementById('settingsBtn');
     const closeSettings = document.getElementById('closeSettings');
     const cloakSelector = document.getElementById('cloakSelector');
-    const panicInput = document.getElementById('panicShortcut');
-    const panicLinkInput = document.getElementById('panicLink');
-    const savePanicBtn = document.getElementById('savePanic');
-    
     const navHome = document.getElementById('nav-home');
     const navGames = document.getElementById('nav-games');
     const heroSection = document.getElementById('heroSection');
     const gameGrid = document.getElementById('gameGrid');
 
+    // --- 3. THEME LOGIC ---
     function applyTheme(theme) {
         const root = document.documentElement;
         if (theme === 'midnight') {
@@ -82,20 +77,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-   // Update your launch function to include the path in the URL
-function launchGame(gameId) {
-    const game = _0xData.find(g => g.id === gameId);
-    if (game) {
-        window.location.href = `Games/game-player.html?id=${game.id}&folder=${game.path}`;
+    // --- 4. NAVIGATION & UNIVERSAL LAUNCHER ---
+    function launchGame(gameId) {
+        const game = _0xData.find(g => g.id === gameId);
+        if (game) {
+            // Sends the ID AND the folder path to the player
+            window.location.href = `Games/game-player.html?id=${game.id}&folder=${game.path}`;
+        }
     }
-}
 
     function showLibrary() {
         if (heroSection) heroSection.style.display = 'none';
         if (gameGrid) {
             gameGrid.innerHTML = '';
             gameGrid.style.display = 'grid';
-            // Fixed: changed 'games' to '_0xData'
             _0xData.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
@@ -114,74 +109,56 @@ function launchGame(gameId) {
         if (gameGrid) gameGrid.style.display = 'none';
     }
 
-    if (navGames) {
-        navGames.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLibrary();
-        });
-    }
+    if (navGames) navGames.onclick = (e) => { e.preventDefault(); showLibrary(); };
+    if (navHome) navHome.onclick = (e) => { e.preventDefault(); showHome(); };
 
-    if (navHome) {
-        navHome.addEventListener('click', (e) => {
-            e.preventDefault();
-            showHome();
-        });
-    }
-
-    document.querySelectorAll('.theme-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const theme = card.getAttribute('data-theme');
-            applyTheme(theme);
-            localStorage.setItem('selectedTheme', theme);
-        });
-    });
+    // --- 5. CLOAK & SETTINGS ---
+    if (settingsBtn) settingsBtn.onclick = () => settingsModal.style.display = 'flex';
+    if (closeSettings) closeSettings.onclick = () => settingsModal.style.display = 'none';
 
     if (cloakSelector) {
         if (savedCloak) cloakSelector.value = savedCloak;
-        cloakSelector.addEventListener('change', (e) => {
+        cloakSelector.onchange = (e) => {
             const val = e.target.value;
             if (val === "none") {
                 localStorage.removeItem('savedCloak');
+                localStorage.removeItem('cloakTitle');
+                localStorage.removeItem('cloakIcon');
                 location.reload(); 
             } else {
                 applyCloak(val);
             }
-        });
+        };
     }
+
+    // --- 6. PANIC BUTTON ---
+    let savedShortcut = localStorage.getItem('panicKey') || "";
+    let savedLink = localStorage.getItem('panicUrl') || "https://google.com";
+    const panicInput = document.getElementById('panicShortcut');
+    const panicLinkInput = document.getElementById('panicLink');
+    const savePanicBtn = document.getElementById('savePanic');
 
     if (panicInput) panicInput.value = savedShortcut;
     if (panicLinkInput) panicLinkInput.value = savedLink;
 
-    if (panicInput) {
-        panicInput.addEventListener('keydown', (e) => {
-            e.preventDefault();
-            panicInput.value = e.key; 
-        });
-    }
-
     if (savePanicBtn) {
-        savePanicBtn.addEventListener('click', () => {
+        savePanicBtn.onclick = () => {
             localStorage.setItem('panicKey', panicInput.value);
             localStorage.setItem('panicUrl', panicLinkInput.value);
-            savedShortcut = panicInput.value;
-            savedLink = panicLinkInput.value;
-            alert("Saved");
-        });
+            alert("Panic settings saved!");
+        };
     }
 
-    window.addEventListener('keydown', (e) => {
+    window.onkeydown = (e) => {
         const isTyping = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
-        if (!isTyping && e.key === savedShortcut && savedShortcut !== "") {
-            let url = savedLink.startsWith('http') ? savedLink : 'https://' + savedLink;
-            window.location.href = url;
+        if (!isTyping && e.key === localStorage.getItem('panicKey')) {
+            window.location.href = localStorage.getItem('panicUrl') || "https://google.com";
         }
-    });
+    };
 
-    if (settingsBtn) settingsBtn.onclick = () => settingsModal.style.display = 'flex';
-    if (closeSettings) closeSettings.onclick = () => settingsModal.style.display = 'none';
-
+    // --- 7. HERO UI ---
     const popular = getMostPopular();
-    if (popular && popular.length > 0) {
+    if (popular.length > 0) {
         const titleEl = document.getElementById('hero-title');
         const descEl = document.getElementById('hero-desc');
         if (titleEl) titleEl.textContent = popular[0].title;
@@ -193,11 +170,8 @@ function launchGame(gameId) {
     const randomBtn = document.getElementById('randomBtn');
     if (randomBtn) {
         randomBtn.onclick = () => {
-            // Fixed: changed 'games' to '_0xData'
-            if (_0xData.length > 0) {
-                const rand = _0xData[Math.floor(Math.random() * _0xData.length)];
-                launchGame(rand.id);
-            }
+            const rand = _0xData[Math.floor(Math.random() * _0xData.length)];
+            launchGame(rand.id);
         };
     }
 });
