@@ -29,6 +29,13 @@ const _0xData = [
     url: "Games/pokemon-emerald/index.html",
     desc: "The classic GBA adventure. Become the Hoenn Champion!",
     popular: true
+  },
+  {
+    id: "b_to",
+    title: atob("QnJvdGF0bw=="), 
+    url: "Games/brotato/index.html",
+    desc: "A top-down arena shooter roguelite where you play a potato wielding up to 6 weapons at a time.",
+    popular: true
   }
 ];
 
