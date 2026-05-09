@@ -42,6 +42,18 @@ function getMostPopular() {
     return _0xData.filter(g => g.popular);
 }
 
+window.openNullChat = function() {
+    const user = localStorage.getItem('chatUser');
+    if (!user) {
+        window.location.href = "Login/login.html";
+        return;
+    }
+    const chatWin = window.open('chat/chat.html', '_blank');
+    if (chatWin) {
+        chatWin.document.title = "Grades";
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('selectedTheme');
     if (savedTheme) applyTheme(savedTheme);
@@ -51,12 +63,33 @@ document.addEventListener('DOMContentLoaded', () => {
         try { applyCloak(savedCloak); } catch (e) { console.error(e); }
     }
 
+    const user = localStorage.getItem('chatUser');
+    const welcomeText = document.getElementById('welcome-text');
+    const signInBtn = document.getElementById('signInBtn');
+
+    if (user) {
+        if (welcomeText) welcomeText.textContent = `Hello, ${user}`;
+        if (signInBtn) signInBtn.textContent = "Sign Out";
+    }
+
+    if (signInBtn) {
+        signInBtn.onclick = () => {
+            if (localStorage.getItem('chatUser')) {
+                localStorage.removeItem('chatUser');
+                location.reload();
+            } else {
+                window.location.href = "Login/login.html";
+            }
+        };
+    }
+
     const settingsModal = document.getElementById('settingsModal');
     const settingsBtn = document.getElementById('settingsBtn');
     const closeSettings = document.getElementById('closeSettings');
     const cloakSelector = document.getElementById('cloakSelector');
     const navHome = document.getElementById('nav-home');
     const navGames = document.getElementById('nav-games');
+    const navComms = document.getElementById('nav-communications');
     const heroSection = document.getElementById('heroSection');
     const gameGrid = document.getElementById('gameGrid');
 
@@ -73,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // DIRECT LOAD LAUNCHER (No iframes)
     function launchGame(gameId) {
         const game = _0xData.find(g => g.id === gameId);
         if (game) {
@@ -106,6 +138,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (navGames) navGames.onclick = (e) => { e.preventDefault(); showLibrary(); };
     if (navHome) navHome.onclick = (e) => { e.preventDefault(); showHome(); };
+
+    if (navComms) {
+        navComms.onclick = (e) => {
+            e.preventDefault();
+            if (heroSection) heroSection.style.display = 'none';
+            if (gameGrid) {
+                gameGrid.innerHTML = `
+                    <div class="game-card" onclick="openNullChat()" style="cursor:pointer; border: 1px solid #8b00ff; background: #0a0a0a;">
+                        <div class="game-info">
+                            <h3>Null Chat</h3>
+                            <p>Encrypted Comms (Sign-in Required)</p>
+                        </div>
+                    </div>
+                `;
+                gameGrid.style.display = 'grid';
+            }
+        };
+    }
 
     if (settingsBtn) settingsBtn.onclick = () => settingsModal.style.display = 'flex';
     if (closeSettings) closeSettings.onclick = () => settingsModal.style.display = 'none';
