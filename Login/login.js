@@ -38,41 +38,55 @@ function checkUsername() {
 }
 
 function handleSignup() {
-  const email = document.getElementById('signupEmail').value.trim();
-  const username = document.getElementById('signupUsername').value.trim();
-  const password = document.getElementById('signupPassword').value;
-  const message = document.getElementById('signupMessage');
+    const email = document.getElementById('signupEmail').value.trim();
+    const username = document.getElementById('signupUsername').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const message = document.getElementById('signupMessage');
 
-  if (!isValidEmail(email) || !username || password.length < 8) {
-    message.innerHTML = '<span class="error">Check your inputs (Password 8+ chars)</span>';
-    return;
-  }
+    if (!isValidEmail(email) || !username || password.length < 8) {
+        message.innerHTML = '<span class="error">Check your inputs (Password 8+ chars)</span>';
+        return;
+    }
 
-  users.push({ email, username, password });
-  saveToDisk();
+    // Check if user already exists
+    if (users.some(u => u.username === username)) {
+        message.innerHTML = '<span class="error">Username already exists</span>';
+        return;
+    }
 
-  message.innerHTML = '<span class="success">Account created! Switch to Login tab.</span>';
+    users.push({ email, username, password });
+    saveToDisk();
 
-  // Clear fields
-  document.getElementById('signupEmail').value = '';
-  document.getElementById('signupUsername').value = '';
-  document.getElementById('signupPassword').value = '';
+    // SUCCESS: Save the "ID card" so the chat knows who you are
+    localStorage.setItem('chatUser', username);
+
+    message.innerHTML = '<span class="success">Account created! Redirecting...</span>';
+    
+    // Send them to the home page after 1 second
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 1000);
 }
 
 function handleLogin() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const message = document.getElementById('loginMessage');
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const message = document.getElementById('loginMessage');
 
-  const user = users.find(u => u.username === username && u.password === password);
-  
-  if (!user) {
-    message.innerHTML = '<span class="error">Invalid username or password</span>';
-    return;
-  }
+    const user = users.find(u => u.username === username && u.password === password);
+    
+    if (!user) {
+        message.innerHTML = '<span class="error">Invalid username or password</span>';
+        return;
+    }
 
-  message.innerHTML = `<span class="success">Welcome, ${username}!</span>`;
-  alert(`Success! You are now logged in as ${username}.`);
+    // SUCCESS: Save the "ID card" so the site knows you are logged in
+    localStorage.setItem('chatUser', username);
+
+    message.innerHTML = `<span class="success">Welcome, ${username}!</span>`;
+    
+    // Redirect to home page so the sign-in screen disappears
+    window.location.href = "../index.html";
 }
 
 // Tab Switching
