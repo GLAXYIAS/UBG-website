@@ -20,13 +20,32 @@
             </div>
 
             <div id="admin-section" style="display: none;">
-                <h3 style="color: #ff4444; font-size: 11px; margin-bottom: 8px; text-align: center; font-weight: bold;">ADMIN CONTROL</h3>
-                <input type="text" id="admin-target-user" placeholder="Target Username...">
-                <div style="display: flex; gap: 4px;">
-                    <button class="admin-btn btn-warn" onclick="adminAction('warn')">Warn</button>
-                    <button class="admin-btn btn-ban" onclick="adminAction('ban')">Ban</button>
-                    <button class="admin-btn btn-tag" onclick="adminAction('tag')">Tag</button>
-                </div>
+    <h3 style="color: #ff4444; font-size: 11px; margin-bottom: 8px; text-align: center; font-weight: bold;">MANAGEMENT</h3>
+    
+    <div class="admin-search-box">
+        <input type="text" id="admin-user-search" placeholder="Type @ to find user..." oninput="handleUserSearch(this.value)">
+        <div id="user-dropdown" class="dropdown-list"></div>
+    </div>
+
+    <div id="controls-area" style="margin-top: 10px;">
+        <div class="category-tabs">
+            <button onclick="setCategory('Chat')">Chat</button>
+            <button onclick="setCategory('Games')">Games</button>
+            <button onclick="setCategory('Both')">Both</button>
+        </div>
+        
+        <input type="text" id="admin-reason" placeholder="Reason for action..." style="width:100%; margin-top:5px; font-size:11px; background:#000; border:1px solid #333; color:white; padding:5px;">
+        
+        <div style="display: flex; gap: 4px; margin-top: 5px;">
+            <button class="admin-btn btn-warn" onclick="processAction('warn')">Warn</button>
+            <button class="admin-btn btn-ban" onclick="processAction('ban')">Ban</button>
+        </div>
+    </div>
+</div>
+
+<div id="ban-notice" style="display:none; background: #440000; color: white; padding: 10px; text-align: center; font-size: 13px; border-bottom: 2px solid red;">
+    <strong>NOTICE:</strong> <span id="notice-text"></span>
+</div>
             </div>
 
             <div class="user-profile">
