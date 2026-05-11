@@ -19,6 +19,7 @@
                 <div id="chan-rules" class="channel" onclick="switchTab('rules')"># rules</div>
                 <div id="chan-dev" class="channel" onclick="switchTab('dev-logs')"># dev-logs</div>
                 <div id="admin-tab" class="channel" style="display:none; color: #ff4444; font-weight: bold;" onclick="switchTab('admin')"># admin</div>
+                <div class="channel" style="margin-top: 20px; opacity: 0.6;" onclick="window.location.href='../index.html'">← Back to Hub</div>
             </div>
 
             <div class="user-profile">
@@ -28,7 +29,7 @@
         </div>
 
         <div class="main-chat">
-            <div id="ban-notice"><strong>NOTICE:</strong> <span id="notice-text"></span></div>
+            <div id="ban-notice" style="display:none;"><strong>NOTICE:</strong> <span id="notice-text"></span></div>
             
             <div id="chat-view">
                 <div id="chat-messages" class="messages-container"></div>
@@ -40,14 +41,14 @@
 
             <div id="users-view" style="display:none; padding: 40px; height: 100%; overflow-y: auto;">
                 <h1 style="color: #8b00ff; margin-bottom: 20px;">User Directory</h1>
-                <input type="text" id="directory-search" placeholder="Search for a user..." style="margin-bottom: 20px;">
+                <input type="text" id="directory-search" placeholder="Search for a user..." style="margin-bottom: 20px; width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: white;">
                 <div id="user-list-display" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
                     </div>
             </div>
 
-            <div id="rules-view" class="rules-content">
+            <div id="rules-view" class="rules-content" style="display:none;">
                 <h1>COMMUNITY RULES</h1>
-                <ul>
+                <ul style="list-style: none; padding: 20px;">
                     <li>1. No handing out personal information.</li>
                     <li>2. No cussing.</li>
                     <li>3. No pornographic images or videos.</li>
@@ -56,9 +57,10 @@
                 </ul>
             </div>
 
-            <div id="admin-panel-view">
+            <div id="admin-panel-view" style="display:none; padding: 40px; overflow-y: auto;">
                 <h1 style="margin-bottom:20px; color:#ff4444;">Admin Management</h1>
-                <div class="admin-grid">
+                <div class="admin-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    
                     <div class="admin-card">
                         <h3>Warnings</h3>
                         <div class="search-wrapper">
@@ -70,36 +72,45 @@
                     </div>
 
                     <div class="admin-card">
-    <h3>Temporary Ban</h3>
-    <div class="search-wrapper">
-        <input type="text" id="temp-ban-search" placeholder="User to temp ban (@...)" oninput="handleAdminSearch(this.value, 'temp-ban-search')">
-    </div>
-    <select id="temp-ban-duration">
-        <option value="1">1 Minute (Testing)</option>
-        <option value="60">1 Hour</option>
-        <option value="1440">24 Hours</option>
-        <option value="10080">1 Week</option>
-    </select>
-    <textarea id="temp-ban-reason" placeholder="Reason for temp ban..." class="bulk-area"></textarea>
-    <button class="admin-btn btn-ban" onclick="executeTempBan()">Apply Temp Ban</button>
-</div>
+                        <h3>Temporary Ban</h3>
+                        <div class="search-wrapper">
+                            <input type="text" id="temp-ban-search" placeholder="User to temp ban (@...)">
+                        </div>
+                        <select id="temp-ban-duration" style="width:100%; margin: 10px 0; padding: 10px; background: #000; color: white; border: 1px solid #333;">
+                            <option value="1">1 Minute (Testing)</option>
+                            <option value="60">1 Hour</option>
+                            <option value="1440">24 Hours</option>
+                            <option value="10080">1 Week</option>
+                        </select>
+                        <textarea id="temp-ban-reason" placeholder="Reason for temp ban..." class="bulk-area"></textarea>
+                        <button class="admin-btn btn-ban" onclick="executeTempBan()">Apply Temp Ban</button>
+                    </div>
+
                     <div class="admin-card">
-                        <h3>Bans</h3>
+                        <h3>Bans & Unbans</h3>
                         <div class="search-wrapper">
                             <input type="text" id="ban-search" placeholder="Type @ to find user...">
                         </div>
                         <input type="text" id="ban-reason" placeholder="Reason...">
-                        <select id="ban-category">
-                            <option value="Both">Both</option>
-                            <option value="Chat">Chat</option>
+                        <select id="ban-category" style="width:100%; margin: 10px 0; padding: 10px; background: #000; color: white; border: 1px solid #333;">
+                            <option value="Both">Both (Site + Chat)</option>
+                            <option value="Chat">Chat Only</option>
                         </select>
                         <button class="admin-btn btn-ban" onclick="adminExecute('ban')">Execute Ban</button>
-                        <button class="admin-btn btn-unban" onclick="adminExecute('unban')">Unban User</button>
+                        <button class="admin-btn btn-unban" onclick="adminExecute('unban')" style="margin-top:5px; background: #444;">Unban User</button>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="lockdown-overlay" style="display:none; position:fixed; inset:0; background:black; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+        <h1 id="lockdown-title" style="color:red; font-size:40px; margin-bottom:20px; font-family:sans-serif; text-transform: uppercase;">YOU ARE BANNED</h1>
+        <p id="lockdown-msg" style="color:white; font-size:18px; margin-bottom:10px; max-width: 600px; line-height: 1.5;"></p>
+        <div id="lockdown-timer" style="color:#ff4444; font-size:28px; font-weight:bold; font-family:monospace; margin-top: 20px; border: 1px solid #333; padding: 15px; border-radius: 8px;"></div>
+    </div>
+
     <script type="module" src="chat.js"></script>
 </body>
 </html>
