@@ -601,3 +601,21 @@ body {
 .game-card:hover .game-desc-overlay {
     opacity: 1;
 }
+/* Safety Shield - Add to bottom of style.css */
+
+.dashboard {
+    display: grid !important; /* Force the layout to show */
+    visibility: visible !important;
+}
+
+/* Ensure the Ban overlay doesn't accidentally trigger from modal styles */
+#lockdown-overlay {
+    background: black !important;
+    z-index: 1000000 !important; /* Higher than your modal-overlay */
+}
+
+/* Fail-safe for your specific games grid */
+.games-grid {
+    display: grid !important;
+    min-height: 200px;
+}
