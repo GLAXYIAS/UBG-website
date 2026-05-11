@@ -15,30 +15,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     const lowerUser = user.toLowerCase();
     document.getElementById('username-display').textContent = user;
     
-    if (lowerUser === ADMIN_NAME) {
-        document.getElementById('admin-tab').style.display = 'block';
+    // Admin Tab Visibility Check
+    if (lowerUser === ADMIN_NAME.toLowerCase()) {
+        const adminTab = document.getElementById('admin-tab');
+        if (adminTab) adminTab.style.display = 'block';
     }
 
     const msgContainer = document.getElementById('chat-messages');
 
-    // --- TAB NAVIGATION ---
+    // --- TAB NAVIGATION (FIXED FOR ADMIN PANEL) ---
     window.switchTab = (target) => {
+        // Hide all views first
         ['chat-view', 'rules-view', 'admin-panel-view', 'users-view'].forEach(v => {
             const el = document.getElementById(v);
             if (el) el.style.display = 'none';
         });
         
+        // Remove active class from all sidebar items
         document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
         
+        // Logic to route the tab click to the correct View ID
         if (target === 'general' || target === 'dev-logs') {
             document.getElementById('chat-view').style.display = 'flex';
-            document.getElementById(target === 'general' ? 'chan-general' : 'chan-dev').classList.add('active');
-        } else {
-            const v = document.getElementById(target + '-view');
+            const tabId = target === 'general' ? 'chan-general' : 'chan-dev';
+            const tabEl = document.getElementById(tabId);
+            if (tabEl) tabEl.classList.add('active');
+        } 
+        else if (target === 'admin') {
+            const adminView = document.getElementById('admin-panel-view');
+            if (adminView) adminView.style.display = 'block';
+            const adminTab = document.getElementById('admin-tab');
+            if (adminTab) adminTab.classList.add('active');
+            fetchAllUsers();
+        } 
+        else {
+            const viewId = target + '-view';
+            const v = document.getElementById(viewId);
             if (v) v.style.display = 'block';
-            const t = document.getElementById('chan-' + target) || document.getElementById('admin-tab');
+            
+            const tabId = 'chan-' + target;
+            const t = document.getElementById(tabId);
             if (t) t.classList.add('active');
-            if (target === 'users' || target === 'admin') fetchAllUsers();
+            
+            if (target === 'users') fetchAllUsers();
         }
     };
 
@@ -99,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ${tag}<strong>${msg.username}</strong> <span style="font-size:10px; opacity:0.5; margin-left:5px;">${time}</span>
                     </div>
                     <div style="${isDel ? 'font-style:italic; opacity:0.5;' : ''}">${msg.content}</div>
-                    ${(lowerUser === ADMIN_NAME && !isDel) ? `<button style="background:none; color:red; font-size:10px; padding:0; margin-top:5px;" onclick="deleteMsg('${msg.id}')">Delete</button>` : ""}
+                    ${(lowerUser === ADMIN_NAME && !isDel) ? `<button style="background:none; color:red; font-size:10px; padding:0; margin-top:5px; cursor:pointer;" onclick="deleteMsg('${msg.id}')">Delete</button>` : ""}
                 `;
                 msgContainer.appendChild(div);
             });
@@ -128,13 +147,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         fetchMessages();
     };
 
-    // --- ADMIN ACTIONS ---
+    // --- ADMIN ACTIONS (EXPORTED TO WINDOW FOR HTML BUTTONS) ---
     window.adminExecute = async (action) => {
         let target = document.getElementById(action === 'warn' ? 'warn-search' : 'ban-search').value.trim();
         const reason = document.getElementById(action === 'warn' ? 'warn-reason' : 'ban-reason').value.trim();
         const cat = document.getElementById('ban-category')?.value || 'Both';
 
         if (!target) return alert("Enter a username.");
+        if (target.startsWith('@')) target = target.substring(1);
 
         let data = { username: target, last_action_reason: reason, last_action_type: action, last_action_category: cat };
         if (action === 'ban') { data.is_banned = true; }
@@ -150,15 +170,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     window.executeTempBan = async () => {
-        const target = document.getElementById('temp-ban-search').value.trim();
+        let target = document.getElementById('temp-ban-search').value.trim();
+        if (target.startsWith('@')) target = target.substring(1);
+        
         const duration = parseInt(document.getElementById('temp-ban-duration').value);
+        const reason = document.getElementById('temp-ban-reason').value.trim();
         const expiry = new Date(); 
         expiry.setMinutes(expiry.getMinutes() + duration);
 
         await fetch(`${SUPABASE_URL}/rest/v1/user_roles`, {
             method: 'POST',
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
-            body: JSON.stringify({ username: target, last_action_type: 'temp_ban', temp_ban_until: expiry.toISOString() })
+            body: JSON.stringify({ 
+                username: target, 
+                last_action_type: 'temp_ban', 
+                last_action_reason: reason,
+                temp_ban_until: expiry.toISOString() 
+            })
         });
         alert("Temporary ban applied.");
     };
@@ -172,7 +200,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         fetchMessages();
     };
 
-    document.getElementById('directory-search').oninput = (e) => renderUserDirectory(e.target.value);
+    const dirSearch = document.getElementById('directory-search');
+    if (dirSearch) {
+        dirSearch.oninput = (e) => renderUserDirectory(e.target.value);
+    }
 
     setInterval(fetchMessages, 3000);
     fetchMessages();
