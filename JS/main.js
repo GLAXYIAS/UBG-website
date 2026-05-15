@@ -239,10 +239,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- GLOBAL PANIC LISTENER ---
-    window.onkeydown = (e) => {
-        const panicKey = localStorage.getItem('panicKey');
-        if (panicKey && e.key === panicKey) {
-            window.location.href = localStorage.getItem('panicUrl') || "https://classroom.google.com";
+window.onkeydown = (e) => {
+    const panicKey = localStorage.getItem('panicKey');
+    if (panicKey && e.key === panicKey) {
+        let url = localStorage.getItem('panicUrl') || "https://classroom.google.com";
+        
+        // Fix: If the URL doesn't start with http, add it so it doesn't stay in the repo
+        if (!url.startsWith('http')) {
+            url = 'https://' + url;
         }
-    };
+        
+        window.location.href = url;
+    }
+};
 });
