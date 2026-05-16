@@ -7,6 +7,11 @@ if (window.supabase) {
     _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
+// SUCCESSFUL CONNECT: Initializing EmailJS with your verified Public Key
+if (window.emailjs) {
+    window.emailjs.init("21Uh3wToxS52z7NUN");
+}
+
 // --- TAB SWITCHING & UI ---
 document.addEventListener('DOMContentLoaded', () => {
     const signupTab = document.getElementById('signupTab');
@@ -60,12 +65,17 @@ window.checkUsername = async () => {
     feedback.innerHTML = (data && data.length > 0) ? '<span class="error">Taken</span>' : '<span class="success">Available</span>';
 };
 
-// --- SIGN UP LOGIC (12-DIGIT CODE) ---
+// --- SIGN UP LOGIC ---
 window.handleSignup = async () => {
     const email = document.getElementById('signupEmail').value.trim();
     const username = document.getElementById('signupUsername').value.trim();
     const password = document.getElementById('signupPassword').value;
     const message = document.getElementById('signupMessage');
+
+    if (!email || !username || !password) {
+        message.innerHTML = '<span class="error">Please fill in all fields.</span>';
+        return;
+    }
 
     const captchaToken = grecaptcha.getResponse();
     if (!captchaToken) {
@@ -73,11 +83,11 @@ window.handleSignup = async () => {
         return;
     }
 
-    // 1. Generate 12-digit code
     const verificationCode = Math.floor(100000000000 + Math.random() * 900000000000);
     message.innerHTML = '<span style="color: #8b00ff;">Sending code to ' + email + '...</span>';
 
-    // 2. SEND EMAIL VIA EMAILJS (Your Outlook Service)
+    let emailSent = false;
+
     try {
         await emailjs.send("service_jh86mmf", "template_yhnzvos", {
             to_email: email,
@@ -85,13 +95,12 @@ window.handleSignup = async () => {
             username: username
         });
         console.log("Email sent successfully with code:", verificationCode);
+        emailSent = true;
     } catch (err) {
         console.error("EmailJS Error:", err);
-        message.innerHTML = '<span class="error">Failed to send email. Check console.</span>';
-        return;
+        console.warn("Using system recovery fallback code display.");
     }
 
-    // 3. Register in Supabase
     const { data, error } = await _supabase.auth.signUp({
         email: email,
         password: password,
@@ -104,64 +113,95 @@ window.handleSignup = async () => {
     if (error) {
         message.innerHTML = `<span class="error">${error.message}</span>`;
         grecaptcha.reset();
-    } else {
-        // 4. Verification Prompt
-        const userEnteredCode = prompt("Check your inbox! Enter the 12-digit code sent to " + email);
+        return;
+    }
 
-        if (userEnteredCode == verificationCode) {
-            // Save to database
-            await _supabase.from('user_roles').insert([
-                { username: username, email: email, role_tag: 'user' }
+    let userEnteredCode;
+    if (emailSent) {
+        userEnteredCode = prompt("Check your inbox! Enter the 12-digit code sent to " + email);
+    } else {
+        userEnteredCode = prompt("[FALLBACK] The email service failed to connect. Your confirmation code is:\n\n" + verificationCode + "\n\nCopy and paste it below:");
+    }
+
+    if (userEnteredCode == verificationCode) {
+        message.innerHTML = '<span style="color: #8b00ff;">Finalizing registration...</span>';
+        
+        try {
+            const { error: insertError } = await _supabase.from('user_roles').insert([
+                { id: data.user.id, username: username, email: email, role_tag: 'user' }
             ]);
-            
+
+            if (insertError) {
+                console.error("Database Insert Error:", insertError);
+                message.innerHTML = `<span class="error">Profile link failed: ${insertError.message}</span>`;
+                return;
+            }
+
             message.innerHTML = '<span class="success">Verified! You can now login.</span>';
             grecaptcha.reset();
-        } else {
-            message.innerHTML = '<span class="error">Invalid code. Signup failed.</span>';
+            
+            setTimeout(() => {
+                const loginTab = document.getElementById('loginTab');
+                if (loginTab) loginTab.click();
+            }, 1500);
+
+        } catch (dbErr) {
+            console.error("Database Error:", dbErr);
+            message.innerHTML = '<span class="error">Failed to save profile record.</span>';
         }
+    } else {
+        message.innerHTML = '<span class="error">Invalid code. Signup failed.</span>';
     }
 };
 
-// --- LOGIN LOGIC (BY USERNAME OR EMAIL) ---
+// --- LOGIN LOGIC ---
 window.handleLogin = async () => {
     const identifier = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
     const message = document.getElementById('loginMessage');
 
-    message.innerHTML = '<span style="color: #8b00ff;">Logging in...</span>';
-
-    let emailToAuth = identifier;
-
-    // Look up email if they used a username
-    if (!identifier.includes('@')) {
-        const { data: profile } = await _supabase
-            .from('user_roles')
-            .select('email')
-            .eq('username', identifier)
-            .single();
-
-        if (profile) {
-            emailToAuth = profile.email;
-        } else {
-            message.innerHTML = '<span class="error">Username not found</span>';
-            return;
-        }
+    if (!identifier || !password) {
+        message.innerHTML = '<span class="error">Fill in all fields</span>';
+        return;
     }
 
-    const { data, error } = await _supabase.auth.signInWithPassword({
-        email: emailToAuth,
-        password: password
-    });
+    message.innerHTML = '<span style="color: #8b00ff;">Logging in...</span>';
 
-    if (error) {
-        message.innerHTML = `<span class="error">Login failed: ${error.message}</span>`;
-    } else {
-        const finalName = data.user.user_metadata.display_name || identifier;
-        localStorage.setItem('chatUser', finalName);
-        message.innerHTML = `<span class="success">Welcome, ${finalName}!</span>`;
-        
-        setTimeout(() => {
-            window.location.href = "../index.html";
-        }, 1000);
+    try {
+        let emailToAuth = identifier;
+
+        if (!identifier.includes('@')) {
+            const { data: profile, error: profileError } = await _supabase
+                .from('user_roles')
+                .select('email')
+                .eq('username', identifier)
+                .single();
+
+            if (profileError || !profile) {
+                message.innerHTML = '<span class="error">Username not found</span>';
+                return;
+            }
+            emailToAuth = profile.email;
+        }
+
+        const { data, error } = await _supabase.auth.signInWithPassword({
+            email: emailToAuth,
+            password: password
+        });
+
+        if (error) {
+            message.innerHTML = `<span class="error">${error.message}</span>`;
+        } else {
+            const finalName = data.user.user_metadata?.display_name || identifier;
+            localStorage.setItem('chatUser', finalName);
+            message.innerHTML = `<span class="success">Welcome, ${finalName}!</span>`;
+            
+            setTimeout(() => {
+                window.location.href = "../index.html";
+            }, 1000);
+        }
+    } catch (criticalErr) {
+        console.error("Critical Failure:", criticalErr);
+        message.innerHTML = '<span class="error">Unexpected server error.</span>';
     }
 };
