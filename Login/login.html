@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In</title>
   <link rel="stylesheet" href="login.css">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </head>
 <body>
   <div class="container">
@@ -38,7 +39,7 @@
         </div>
       </div>
 
-      <div class="g-recaptcha" data-sitekey="6LdzjuUsAAAAALEgGEty8hptKr13TC-6oLKgDlE2" style="margin-bottom: 15px; display: flex; justify-content: center;"></div>
+      <div class="h-captcha" data-sitekey="b4266af2-5430-4ec8-9554-3aa67a465698" style="margin-bottom: 15px; display: flex; justify-content: center;"></div>
 
       <div id="signupMessage" class="feedback"></div>
       <button onclick="handleSignup()">Create Account</button>
@@ -61,6 +62,6 @@
     </div>
   </div>
 
-  <script src="login.js"></script>
+  <script src="login.js?v=4"></script>
 </body>
 </html>
